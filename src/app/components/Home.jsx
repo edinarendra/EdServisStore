@@ -120,8 +120,8 @@ export default function Home() {
 
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
       {[
-        { title: "Servis Handphone", before: "images/pake 1.jpeg", after: "images/pake 3.jpg" },
-        { title: "Servis Laptop", before: "images/Pake 6.jpeg", after: "images/pake 7.jpg" },
+        { title: "Servis Handphone", before: "images/Pake 1.jpeg", after: "images/Pake 3.jpg" },
+        { title: "Servis Laptop", before: "images/pake 6.jpeg", after: "images/Pake 7.jpg" },
         { title: "Rakit Komputer", before: "images/pake 5.jpg", after: "images/pake 4.jpg" },
       ].map((item, i) => (
         <motion.div
