@@ -137,50 +137,73 @@ export default function Home() {
       </section>
 
       {/* Hasil Servis */}
-      <section id="hasil" className="py-20 bg-gray-100 text-center" data-aos="fade-up">
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-gray-800">
-            Hasil <span className="text-yellow-500">Servis Kami</span>
-          </h2>
-          <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
-            Beberapa contoh hasil pengerjaan kami — mulai dari servis HP, laptop, hingga rakit PC.
-          </p>
+<section id="hasil" className="py-20 bg-gray-100 text-center" data-aos="fade-up">
+  <div className="max-w-6xl mx-auto px-6">
+    <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-gray-800">
+      Hasil <span className="text-yellow-500">Servis Kami</span>
+    </h2>
+    <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
+      Beberapa contoh hasil pengerjaan kami — mulai dari servis HP, laptop, hingga rakit PC.
+    </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {images.map((src, index) => (
-              <div
-                key={index}
-                className="relative group overflow-hidden rounded-2xl shadow-lg cursor-pointer will-change-transform"
-                onClick={() => {
-                  setPhotoIndex(index);
-                  setIsOpen(true);
-                }}
-              >
-                <img
-                  src={src}
-                  alt={`Hasil Servis ${index + 1}`}
-                  className="w-full h-64 object-cover transform group-hover:scale-110 transition duration-500"
-                  loading="lazy"
-                />
-                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-500">
-                  <span className="text-white font-semibold">Lihat Detail</span>
-                </div>
+    {/* Array gambar */}
+    {(() => {
+      const images = [
+        "/images/Pake 1.jpeg",
+        "/images/Pake 2.jpeg",
+        "/images/Pake 3.jpg",
+        "/images/pake 4.jpg",
+        "/images/pake 5.jpg",
+        "/images/pake 6.jpeg",
+        "/images/Pake 7.jpg",
+      ];
+
+      return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {images.map((src, index) => (
+            <div
+              key={index}
+              className="relative group overflow-hidden rounded-2xl shadow-lg cursor-pointer will-change-transform"
+              onClick={() => {
+                setPhotoIndex(index);
+                setIsOpen(true);
+              }}
+            >
+              <img
+                src={src}
+                alt={`Hasil Servis ${index + 1}`}
+                className="w-full h-64 object-cover transform group-hover:scale-110 transition duration-500"
+                loading="lazy"
+              />
+              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-500">
+                <span className="text-white font-semibold">Lihat Detail</span>
               </div>
-            ))}
-          </div>
-
-          {isOpen && (
-            <Lightbox
-              open={isOpen}
-              close={() => setIsOpen(false)}
-              slides={images.map((src) => ({ src }))}
-              index={photoIndex}
-              carousel={{ finite: false }}
-              on={{ view: ({ index }) => setPhotoIndex(index) }}
-            />
-          )}
+            </div>
+          ))}
         </div>
-      </section>
+      );
+    })()}
+
+    {isOpen && (
+      <Lightbox
+        open={isOpen}
+        close={() => setIsOpen(false)}
+        slides={[
+          { src: "/images/Pake 1.jpeg" },
+          { src: "/images/Pake 2.jpeg" },
+          { src: "/images/Pake 3.jpg" },
+          { src: "/images/pake 4.jpg" },
+          { src: "/images/pake 5.jpg" },
+          { src: "/images/pake 6.jpeg" },
+          { src: "/images/Pake 7.jpg" },
+        ]}
+        index={photoIndex}
+        carousel={{ finite: false }}
+        on={{ view: ({ index }) => setPhotoIndex(index) }}
+      />
+    )}
+  </div>
+</section>
 
       {/* Kontak */}
       <section id="kontak" className="py-20 bg-gradient-to-br from-blue-50 to-white" data-aos="fade-up-left">
