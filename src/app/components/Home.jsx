@@ -1,261 +1,327 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { motion } from "framer-motion";
-
+import Lightbox from "yet-another-react-lightbox";
+import "yet-another-react-lightbox/styles.css";
 
 export default function Home() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [photoIndex, setPhotoIndex] = useState(0);
+
+  const images = [
+    "/images/pake 1.jpeg",
+    "/images/pake 2.jpeg",
+    "/images/pake 3.jpg",
+    "/images/pake 4.jpg",
+    "/images/pake 5.jpg",
+    "/images/pake 6.jpeg",
+  ];
+
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
   }, []);
 
   return (
-    <main className="text-gray-800">
+    <main className="text-gray-800 scroll-smooth overflow-x-hidden transition-none motion-safe:transform-none">
+
       {/* Hero Section */}
       <section
-        className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white py-20 px-4 text-center"
+        id="hero"
+        className="relative text-white py-28 sm:py-32 px-6 text-center overflow-hidden min-h-[auto]"
         data-aos="fade-up"
       >
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 leading-tight">
-            Servis HP & Laptop Cepat dan Bergaransi
+        <div
+          className="absolute inset-0 bg-cover bg-center will-change-transform"
+          style={{ backgroundImage: "url('/images/servis.png')" }}
+        ></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/70 to-black/80"></div>
+
+        <div className="relative z-10 max-w-4xl mx-auto">
+          <h1 className="text-4xl sm:text-5xl font-extrabold mb-6 leading-tight">
+            Servis HP & Laptop{" "}
+            <span className="text-yellow-400">Cepat, Aman, dan Bergaransi</span>
           </h1>
-          <p className="text-base sm:text-lg md:text-xl mb-8">
-            Solusi terpercaya untuk semua kerusakan gadget Anda – cepat, aman, dan profesional.
-          </p>
-          <a
-            href="#kontak"
-            className="inline-block bg-white text-blue-700 font-semibold py-3 px-6 rounded-full shadow hover:bg-gray-200 transition"
-          >
-            Hubungi Kami
-          </a>
-        </div>
-      </section>
-
-      {/* Layanan Section */}
-      <section id="layanan" className="py-20 px-4 bg-gray-100" data-aos="fade-up">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6">Layanan Kami</h2>
-          <p className="text-gray-600 mb-12 text-sm sm:text-base">
-            Kami menyediakan berbagai layanan servis untuk gadget Anda dengan kualitas terbaik.
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-8">
+            Solusi terpercaya untuk semua kerusakan gadget Anda – ditangani langsung oleh teknisi berpengalaman.
           </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {/* Servis HP */}
-            <div className="bg-white p-6 rounded-xl shadow hover:shadow-md transition" data-aos="zoom-in">
-              <h3 className="text-lg font-semibold mb-3 text-blue-700">Servis HP</h3>
-              <ul className="list-disc list-inside text-sm text-gray-600 space-y-1 text-left">
-                <li>Ganti layar/LCD pecah</li>
-                <li>Baterai cepat habis / drop</li>
-                <li>HP tidak bisa di-charge</li>
-                <li>Masalah software (bootloop, error sistem)</li>
-                <li>Kamera tidak berfungsi</li>
-              </ul>
-            </div>
-
-            {/* Servis Laptop */}
-            <div className="bg-white p-6 rounded-xl shadow hover:shadow-md transition" data-aos="zoom-in">
-              <h3 className="text-lg font-semibold mb-3 text-blue-700">Servis Laptop</h3>
-              <ul className="list-disc list-inside text-sm text-gray-600 space-y-1 text-left">
-                <li>Laptop lemot atau freeze</li>
-                <li>Mati total atau tidak bisa menyala</li>
-                <li>Keyboard / touchpad rusak</li>
-                <li>Overheat atau cepat panas</li>
-                <li>Instal ulang dan perbaikan software</li>
-              </ul>
-            </div>
-
-            {/* Ganti Sparepart */}
-            <div className="bg-white p-6 rounded-xl shadow hover:shadow-md transition" data-aos="zoom-in">
-              <h3 className="text-lg font-semibold mb-3 text-blue-700">Ganti Sparepart</h3>
-              <ul className="list-disc list-inside text-sm text-gray-600 space-y-1 text-left">
-                <li>Baterai original berbagai merek</li>
-                <li>Penggantian LCD / layar sentuh</li>
-                <li>Speaker, mic, kamera, dan sensor</li>
-                <li>Komponen laptop (RAM, SSD, kipas)</li>
-                <li>Semua pemasangan bergaransi</li>
-              </ul>
-            </div>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <a
+              href="#layanan"
+              className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold py-3 px-8 rounded-full shadow-md transition-all"
+            >
+              Lihat Layanan
+            </a>
+            <a
+              href="#kontak"
+              className="border border-yellow-400 hover:bg-yellow-400/20 text-yellow-400 font-semibold py-3 px-8 rounded-full transition-all"
+            >
+              Hubungi Kami
+            </a>
           </div>
         </div>
       </section>
 
-            {/* Kenapa Memilih Kami */}
-            <section id="keunggulan" className="py-20 px-4 bg-gradient-to-b from-white to-gray-100" data-aos="fade-right">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6">Kenapa Memilih Kami?</h2>
-          <p className="text-gray-600 mb-12 text-sm sm:text-base">
-            Pelayanan terbaik dengan kualitas tidak tertandingi.
-          </p>
+ {/* Kenapa Kami */}
+<section
+  id="kenapa-kami"
+  className="scroll-mt-24 py-24 bg-gray-50 text-center relative z-10"
+  data-aos="fade-up"
+>
+  <div className="max-w-6xl mx-auto px-6">
+    <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-12">
+      Kenapa Memilih <span className="text-blue-600">EdServisStore?</span>
+    </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            <div className="p-6 rounded-xl border border-gray-200 hover:shadow-lg transition" data-aos="flip-left">
-              <h3 className="text-lg font-semibold mb-2 text-blue-700">Garansi Servis</h3>
-              <p className="text-sm text-gray-600">Garansi hingga 1-12 bulan untuk semua layanan.</p>
-            </div>
-            <div className="p-6 rounded-xl border border-gray-200 hover:shadow-lg transition" data-aos="flip-up">
-              <h3 className="text-lg font-semibold mb-2 text-blue-700">Teknisi Berpengalaman</h3>
-              <p className="text-sm text-gray-600">
-                Tim profesional dengan pengalaman menangani banyak kerusakan android, iPhone, Windows, ataupun MacBook.
-              </p>
-            </div>
-            <div className="p-6 rounded-xl border border-gray-200 hover:shadow-lg transition" data-aos="flip-right">
-            <h3 className="text-lg font-semibold mb-2 text-blue-700">Home Servis / COD</h3>
-<p className="text-sm text-gray-600">Layanan perbaikan langsung ke rumah atau bayar di tempat untuk kenyamanan Anda.</p>
-
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* Before & After Section */}
-<section id="before-after" className="py-20 px-4 bg-gray-100">
-  <div className="max-w-6xl mx-auto text-center">
-    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6">Hasil Servis Kami</h2>
-    <p className="text-gray-600 mb-12 text-sm sm:text-base">
-      Lihat hasil Gadget yang diservis oleh tim kami.
-    </p>
-
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
       {[
-        { title: "Servis Handphone", before: "images/Pake 1.jpeg", after: "images/Pake 3.jpg" },
-        { title: "Servis Laptop", before: "images/pake 6.jpeg", after: "images/Pake 7.jpg" },
-        { title: "Rakit Komputer", before: "images/pake 5.jpg", after: "images/pake 4.jpg" },
-      ].map((item, i) => (
-        <motion.div
+        {
+          icon: "⚡",
+          title: "Cepat & Efisien",
+          desc: "Proses servis dilakukan dengan cepat tanpa mengorbankan kualitas pekerjaan.",
+        },
+        {
+          icon: "🧰",
+          title: "Teknisi Berpengalaman",
+          desc: "Dikerjakan langsung oleh teknisi profesional dengan pengalaman bertahun-tahun.",
+        },
+        {
+          icon: "🛡️",
+          title: "Bergaransi",
+          desc: "Semua layanan servis kami dilengkapi dengan garansi sesuai jenis perbaikan.",
+        },
+        {
+          icon: "💬",
+          title: "Konsultasi Gratis",
+          desc: "Kamu bisa konsultasi dulu tanpa biaya sebelum melakukan servis.",
+        },
+      ].map((card, i) => (
+        <div
           key={i}
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: i * 0.2 }}
-          className="bg-white p-4 rounded-xl shadow hover:shadow-md transition"
+          className="bg-white rounded-2xl shadow-md p-8 hover:shadow-lg transition-all duration-300"
         >
-          <h3 className="text-sm font-semibold mb-2 text-blue-700">{item.title}</h3>
-          <div className="flex gap-2">
-            <div className="w-1/2">
-              <img src={item.before} alt="Before" className="rounded-lg object-cover w-full h-40" />
-              <p className="text-xs text-gray-500 mt-1"></p>
-            </div>
-            <div className="w-1/2">
-              <img src={item.after} alt="After" className="rounded-lg object-cover w-full h-40" />
-            </div>
-          </div>
-        </motion.div>
+          <div className="text-blue-600 mb-4 text-5xl">{card.icon}</div>
+          <h3 className="text-xl font-semibold mb-2">{card.title}</h3>
+          <p className="text-gray-600">{card.desc}</p>
+        </div>
       ))}
     </div>
   </div>
 </section>
 
 
-      {/* Kontak Kami */}
-      <section id="kontak" className="py-16 bg-white px-4" data-aos="fade-up-left">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold mb-6">Kontak Kami di Sosial Media</h2>
-          <p className="text-gray-600 mb-10 text-sm sm:text-base">
-            Terhubung dengan kami melalui platform berikut:
+      {/* Layanan Kami */}
+      <section id="layanan" className="py-20 bg-white text-center" data-aos="fade-up">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-12">
+            Layanan <span className="text-blue-600">Kami</span>
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { icon: "📱", title: "Servis HP", desc: "Perbaikan semua jenis kerusakan smartphone — dari software hingga hardware." },
+              { icon: "💻", title: "Servis Laptop", desc: "Penanganan kerusakan laptop semua merek dengan sparepart berkualitas." },
+              { icon: "🖥️", title: "Rakit PC", desc: "Rakit PC sesuai kebutuhan — gaming, editing, atau kantor, dengan harga bersahabat." },
+              { icon: "🛒", title: "Aksesoris & Sparepart", desc: "Tersedia berbagai aksesoris dan sparepart gadget berkualitas dengan harga terbaik." },
+            ].map((layanan, i) => (
+              <div key={i} className="bg-gray-50 rounded-2xl p-8 shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300">
+                <div className="text-blue-600 text-5xl mb-4">{layanan.icon}</div>
+                <h3 className="text-xl font-semibold mb-2">{layanan.title}</h3>
+                <p className="text-gray-600">{layanan.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Hasil Servis */}
+      <section id="hasil" className="py-20 bg-gray-100 text-center" data-aos="fade-up">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-gray-800">
+            Hasil <span className="text-yellow-500">Servis Kami</span>
+          </h2>
+          <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
+            Beberapa contoh hasil pengerjaan kami — mulai dari servis HP, laptop, hingga rakit PC.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-6">
-            <a href="https://www.facebook.com/edi.aput.2025" target="_blank" rel="noopener noreferrer">
-              <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" className="w-8 h-8" />
-            </a>
-            <a href="https://www.instagram.com/ediaput411/" target="_blank" rel="noopener noreferrer">
-              <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" className="w-8 h-8" />
-            </a>
-            <a href="https://wa.me/6289671577111" target="_blank" rel="noopener noreferrer">
-              <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" className="w-8 h-8" />
-            </a>
-            <a href="mailto:ediaput200@gmail.com">
-              <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email" className="w-8 h-8" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {images.map((src, index) => (
+              <div
+                key={index}
+                className="relative group overflow-hidden rounded-2xl shadow-lg cursor-pointer will-change-transform"
+                onClick={() => {
+                  setPhotoIndex(index);
+                  setIsOpen(true);
+                }}
+              >
+                <img
+                  src={src}
+                  alt={`Hasil Servis ${index + 1}`}
+                  className="w-full h-64 object-cover transform group-hover:scale-110 transition duration-500"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-500">
+                  <span className="text-white font-semibold">Lihat Detail</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {isOpen && (
+            <Lightbox
+              open={isOpen}
+              close={() => setIsOpen(false)}
+              slides={images.map((src) => ({ src }))}
+              index={photoIndex}
+              carousel={{ finite: false }}
+              on={{ view: ({ index }) => setPhotoIndex(index) }}
+            />
+          )}
+        </div>
+      </section>
+
+      {/* Kontak */}
+      <section id="kontak" className="py-20 bg-gradient-to-br from-blue-50 to-white" data-aos="fade-up-left">
+        <div className="max-w-5xl mx-auto px-6 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-gray-800">
+            Terhubung dengan <span className="text-blue-600">EdServisStore</span>
+          </h2>
+          <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
+            Kami siap melayani pertanyaan dan pemesanan melalui berbagai platform berikut.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-8">
+            {[
+              {
+                href: "https://www.facebook.com/edi.aput.2025",
+                src: "https://cdn-icons-png.flaticon.com/512/733/733547.png",
+                alt: "Facebook",
+                color: "hover:bg-[#1877F2]/10",
+              },
+              {
+                href: "https://www.instagram.com/ediaput411/",
+                src: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png",
+                alt: "Instagram",
+                color: "hover:bg-gradient-to-br hover:from-pink-500/20 hover:to-yellow-500/20",
+              },
+              {
+                href: "https://wa.me/6289671577111",
+                src: "https://cdn-icons-png.flaticon.com/512/733/733585.png",
+                alt: "WhatsApp",
+                color: "hover:bg-[#25D366]/10",
+              },
+              {
+                href: "https://mail.google.com/mail/?view=cm&fs=1&to=ediaput200@gmail.com",
+                src: "https://cdn-icons-png.flaticon.com/512/732/732200.png",
+                alt: "Email",
+                color: "hover:bg-red-500/10",
+              },
+            ].map((icon, i) => (
+              <a
+                key={i}
+                href={icon.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`w-20 h-20 flex flex-col items-center justify-center rounded-full bg-white shadow-md transition-all hover:scale-110 ${icon.color}`}
+              >
+                <img src={icon.src} alt={icon.alt} className="w-8 h-8 mb-2" />
+                <span className="text-xs text-gray-600 font-medium">
+                  {icon.alt}
+                </span>
+              </a>
+            ))}
+          </div>
+
+          <div className="mt-12">
+            <a
+              href="https://wa.me/6289671577111"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-6 py-3 rounded-full font-medium shadow-lg transition-all"
+            >
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
+                alt="WhatsApp"
+                className="w-5 h-5"
+              />
+              Chat via WhatsApp
             </a>
           </div>
         </div>
       </section>
 
-      <section id="marketplace" className="py-16 bg-white px-4" data-aos="fade-up-right">
-  <div className="max-w-4xl mx-auto text-center">
-    <h2 className="text-2xl sm:text-3xl font-bold mb-6">Tempat Kami Berjualan</h2>
-    <p className="text-gray-600 mb-10 text-sm sm:text-base">
-      Anda dapat membeli produk kami secara online melalui platform berikut:
-    </p>
+      {/* Marketplace */}
+      <section id="marketplace" className="py-20 bg-gradient-to-br from-white to-blue-50" data-aos="fade-up-right">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-gray-800">
+            Temukan Kami di <span className="text-blue-600">Marketplace</span>
+          </h2>
+          <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
+            Dapatkan produk dan layanan kami secara online melalui toko resmi EdServisStore di berbagai platform berikut.
+          </p>
 
-    <div className="flex flex-wrap justify-center gap-6">
-      <a href="https://www.tokopedia.com/edsparepartstore" target="_blank" rel="noopener noreferrer">
-        <div className="w-20 h-20 flex items-center justify-center bg-gray-100 rounded-lg">
-          <img
-            src="images/tokopedia.png"
-            alt="Tokopedia"
-            className="w-15 h-15"
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 justify-center">
+            {[
+              {
+                href: "https://www.tokopedia.com/edsparepartstore",
+                img: "/images/tokopedia.png",
+                name: "Tokopedia",
+                gradient: "from-green-100 to-green-50",
+              },
+              {
+                href: "https://www.shopee.co.id/edsparepartstore",
+                img: "/images/shopee.png",
+                name: "Shopee",
+                gradient: "from-orange-100 to-orange-50",
+              },
+            ].map((market, i) => (
+              <a
+                key={i}
+                href={market.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`block rounded-2xl bg-gradient-to-br ${market.gradient} p-8 border-2 border-transparent shadow-md hover:shadow-xl hover:border-blue-400 transition-all duration-300`}
+              >
+                <div className="flex flex-col items-center justify-center gap-4">
+                  <img
+                    src={market.img}
+                    alt={market.name}
+                    className="w-20 h-20 object-contain"
+                    loading="lazy"
+                  />
+                  <h3 className="text-xl font-semibold text-gray-800">
+                    {market.name}
+                  </h3>
+                  <span className="inline-block mt-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-full text-sm font-medium transition">
+                    Kunjungi Toko
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
         </div>
-      </a>
-      <a href="https://www.shopee.co.id/edsparepartstore" target="_blank" rel="noopener noreferrer">
-      <div className="w-20 h-20 flex items-center justify-center bg-gray-100 rounded-lg">
-  <img
-    src="images/shopee.png"
-    alt="Shopee"
-    className="w-17 h-17"
-  />
-</div>
-
-      </a>
-    </div>
-  </div>
-</section>
+      </section>
 
 
-
+{/* FLOATING WHATSAPP BUTTON */}
 <a
   href="https://wa.me/6289671577111"
   target="_blank"
   rel="noopener noreferrer"
-  className="fixed bottom-5 right-5 z-50 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-bounce"
+  className="fixed bottom-5 right-5 z-[9999] bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-full shadow-lg flex items-center gap-2 animate-bounce transition-all duration-300"
   title="Hubungi via WhatsApp"
 >
   <img
     src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
     alt="WhatsApp"
     className="w-6 h-6"
+    loading="lazy"
   />
-  <span className="hidden sm:inline text-xs font-medium">Chat Sekarang</span>
+  <span className="hidden sm:inline text-xs font-medium">
+    Chat Sekarang
+  </span>
 </a>
-
-
-
-
-
-
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-10 px-4" data-aos="fade-up" data-aos-delay="200">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          <div>
-            <h3 className="text-xl font-bold mb-2">EdServisStore</h3>
-            <p className="text-sm text-gray-300">
-              Spesialis servis gadget cepat dan terpercaya. Kami hadir untuk menyelesaikan semua masalah HP dan laptop Anda.
-            </p>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-3">Navigasi</h4>
-            <ul className="space-y-2 text-sm text-gray-300">
-              <li><a href="#layanan" className="hover:text-white">Layanan</a></li>
-              <li><a href="#keunggulan" className="hover:text-white">Kenapa Kami</a></li>
-              <li><a href="#kontak" className="hover:text-white">Kontak</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-lg font-semibold mb-3">Kontak Kami</h4>
-            <p className="text-sm text-gray-300">0881-0372-43330</p>
-            <p className="text-sm text-gray-300">ediaput200@gmail.com</p>
-            <p className="text-sm text-gray-300">Lingkungan Kebon Sari Gang 4 No.25A</p>
-          </div>
-        </div>
-
-        <div className="text-center text-xs text-gray-500 mt-8 border-t border-gray-700 pt-4">
-          © {new Date().getFullYear()} EdiNarendra. All rights reserved.
-        </div>
-      </footer>
 
     </main>
   );
