@@ -1,4 +1,5 @@
 "use client";
+import TestimonialSection from "./TestimonialSection";
 import { useEffect, useState } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -302,6 +303,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* Testimonial Section */}
+<TestimonialSection />
 
 
 {/* FLOATING WHATSAPP BUTTON */}
