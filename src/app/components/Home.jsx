@@ -205,6 +205,10 @@ export default function Home() {
   </div>
 </section>
 
+      {/* Testimonial Section */}
+      <TestimonialSection />
+
+
       {/* Kontak */}
       <section id="kontak" className="py-20 bg-gradient-to-br from-blue-50 to-white" data-aos="fade-up-left">
         <div className="max-w-5xl mx-auto px-6 text-center">
@@ -327,8 +331,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonial Section */}
-<TestimonialSection />
 
 
 {/* FLOATING WHATSAPP BUTTON */}
