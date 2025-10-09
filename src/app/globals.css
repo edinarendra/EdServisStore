@@ -3,5 +3,35 @@
 @tailwind utilities;
 
 html {
-    scroll-behavior: smooth;
-  }
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Hanya body yang dikunci saat lightbox terbuka */
+body.lightbox-open {
+  overflow: hidden !important;
+}
+
+/* Lightbox portal full-screen */
+.yarl__portal {
+  position: fixed !important;
+  inset: 0 !important;
+  overflow: hidden !important;
+  z-index: 9999 !important;
+}
+
+/* Jangan kunci overflow global pada section, biarkan natural */
+section {
+  position: relative;
+  overflow: visible;
+}
+
+/* Mencegah flicker dan double-scroll di awal load */
+main {
+  overflow: hidden;
+}

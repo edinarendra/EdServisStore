@@ -1,3 +1,4 @@
+
 "use client";
 import { useState, useEffect } from "react";
 import { Menu, X, Wrench, Star, PhoneCall } from "lucide-react";
@@ -7,46 +8,34 @@ export default function Header() {
   const [activeSection, setActiveSection] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // 🔥 Deteksi scroll & highlight section aktif dengan presisi
+  // Deteksi scroll & aktif section
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
 
-      const sections = document.querySelectorAll("section[id]");
+      const sections = ["layanan", "kenapa-kami", "kontak"];
       let current = "home";
-      const scrollY = window.scrollY;
-
-      sections.forEach((section) => {
-        const sectionTop = section.offsetTop - 250; // offset agar lebih cepat terdeteksi
-        const sectionHeight = section.offsetHeight;
-        const id = section.getAttribute("id");
-
-        if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+      sections.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el && window.scrollY >= el.offsetTop - 200) {
           current = id;
         }
       });
-
       setActiveSection(current);
     };
 
     window.addEventListener("scroll", handleScroll);
-    handleScroll(); // panggil langsung saat pertama kali load
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // 🔧 Scroll halus ke section
+  // Fungsi scroll halus
   const handleScrollTo = (id) => {
     setMenuOpen(false);
     const el = document.getElementById(id);
-    if (el) {
-      const yOffset = -80; // biar gak ketutup header
-      const y =
-        el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
+    if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  // 📋 Daftar menu navbar
+  // Data menu header
   const navItems = [
     { id: "layanan", label: "Layanan", icon: <Wrench size={16} /> },
     { id: "kenapa-kami", label: "Kenapa Kami", icon: <Star size={16} /> },
@@ -63,12 +52,12 @@ export default function Header() {
         {/* Logo */}
         <div
           onClick={() => handleScrollTo("home")}
-          className="text-2xl font-bold text-yellow-400 cursor-pointer transition-transform hover:scale-105"
+          className="text-2xl font-bold text-yellow-400 cursor-pointer"
         >
           EdServisStore
         </div>
 
-        {/* Menu Desktop */}
+        {/* Menu desktop */}
         <nav className="hidden md:flex space-x-8 text-sm font-medium">
           {navItems.map((item) => (
             <button
@@ -88,7 +77,7 @@ export default function Header() {
           ))}
         </nav>
 
-        {/* Tombol Menu Mobile */}
+        {/* Tombol menu mobile */}
         <button
           className="md:hidden text-white focus:outline-none"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -97,14 +86,14 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Menu Mobile Dropdown */}
+      {/* Menu mobile dropdown */}
       {menuOpen && (
         <div className="md:hidden bg-black text-white flex flex-col items-center space-y-4 py-4 transition-all duration-500">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => handleScrollTo(item.id)}
-              className={`flex items-center gap-2 text-base transition duration-300 ${
+              className={`flex items-center gap-2 text-base ${
                 activeSection === item.id
                   ? "text-yellow-400"
                   : "hover:text-yellow-400"
