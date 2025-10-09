@@ -1,45 +1,71 @@
-
 "use client";
 import { useState, useEffect } from "react";
-import { Menu, X, Wrench, Star, PhoneCall } from "lucide-react";
+import {
+  Menu,
+  X,
+  Wrench,
+  Star,
+  PhoneCall,
+  ClipboardCheck,
+  MessageSquare,
+  ShoppingBag,
+} from "lucide-react";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Deteksi scroll & aktif section
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
 
-      const sections = ["layanan", "kenapa-kami", "kontak"];
+      // Urutan sesuai permintaan baru
+      const sections = [
+        "kenapa-kami",
+        "layanan",
+        "hasil-servis",
+        "testimoni",
+        "kontak",
+        "market-place",
+      ];
+
       let current = "home";
-      sections.forEach((id) => {
+      let midpoint = window.innerHeight / 3;
+
+      for (const id of sections) {
         const el = document.getElementById(id);
-        if (el && window.scrollY >= el.offsetTop - 200) {
-          current = id;
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= midpoint && rect.bottom >= midpoint) {
+            current = id;
+            break;
+          }
         }
-      });
+      }
+
       setActiveSection(current);
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Fungsi scroll halus
   const handleScrollTo = (id) => {
     setMenuOpen(false);
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
-  // Data menu header
+  // Urutan menu disesuaikan dengan keinginan
   const navItems = [
-    { id: "layanan", label: "Layanan", icon: <Wrench size={16} /> },
     { id: "kenapa-kami", label: "Kenapa Kami", icon: <Star size={16} /> },
+    { id: "layanan", label: "Layanan", icon: <Wrench size={16} /> },
+    { id: "hasil-servis", label: "Hasil Servis", icon: <ClipboardCheck size={16} /> },
+    { id: "testimoni", label: "Testimoni", icon: <MessageSquare size={16} /> },
     { id: "kontak", label: "Kontak", icon: <PhoneCall size={16} /> },
+    { id: "market-place", label: "Market Place", icon: <ShoppingBag size={16} /> },
   ];
 
   return (
@@ -49,7 +75,6 @@ export default function Header() {
       }`}
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between py-4 px-6">
-        {/* Logo */}
         <div
           onClick={() => handleScrollTo("home")}
           className="text-2xl font-bold text-yellow-400 cursor-pointer"
@@ -58,16 +83,14 @@ export default function Header() {
         </div>
 
         {/* Menu desktop */}
-        <nav className="hidden md:flex space-x-8 text-sm font-medium">
+        <nav className="hidden md:flex space-x-6 text-sm font-medium">
           {navItems.map((item) => (
             <button
               key={item.id}
               onClick={() => handleScrollTo(item.id)}
               className={`flex items-center gap-2 transition duration-300 ${
                 activeSection === item.id
-                  ? "text-yellow-400"
-                  : isScrolled
-                  ? "text-white hover:text-yellow-400"
+                  ? "text-yellow-400 border-b-2 border-yellow-400 pb-1"
                   : "text-white hover:text-yellow-400"
               }`}
             >

@@ -21,7 +21,7 @@ export default function Home() {
       offset: 100,
     });
 
-    // Bersihkan sisa scroll bar dari render awal
+    // Bersihkan sisa scroll bar
     document.documentElement.style.overflowY = "auto";
     document.body.style.overflow = "";
 
@@ -53,49 +53,35 @@ export default function Home() {
 
   return (
     <main className="text-gray-800 overflow-x-hidden relative">
-      {/* ================= HERO SECTION ================= */}
-      <section
-        id="hero"
-        className="relative text-white flex items-center justify-center text-center px-6 h-[100vh] sm:h-[100vh] overflow-visible"
-        data-aos="fade-up"
-      >
-        {/* Background Image */}
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/servis.png')" }}
-        ></div>
 
-        {/* Lapisan Gelap */}
-        <div className="absolute inset-0 bg-gradient-to-br from-blue-900/70 to-black/80"></div>
+<section
+  id="home"
+  className="min-h-screen flex flex-col items-center justify-center text-center bg-[radial-gradient(circle_at_center,_#444444_0%,_#1a1a1a_50%,_#000000_100%)]
+ px-6"
+>
+  <img
+    src="/images/logo.png"
+    alt="EdServisStore Logo"
+    className="w-28 h-28 mb-4 object-contain rounded-full shadow-lg border-2 border-yellow-400"
+  />
 
-        {/* Konten */}
-        <div className="relative z-10 max-w-4xl mx-auto">
-          <h1 className="text-4xl sm:text-5xl font-extrabold mb-6 leading-tight">
-            Servis HP & Laptop{" "}
-            <span className="text-yellow-400">Cepat, Aman, dan Bergaransi</span>
-          </h1>
+  <h1 className="text-5xl sm:text-6xl font-extrabold mb-4 text-yellow-400">
+    EdServisStore
+  </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 mb-8">
-            Solusi terpercaya untuk semua kerusakan gadget Anda – ditangani oleh
-            teknisi berpengalaman.
-          </p>
+  <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-6">
+    Servis HP & Laptop{" "}
+    <span className="text-yellow-400">Cepat, Aman, dan Bergaransi</span>
+  </h2>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a
-              href="#layanan"
-              className="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-semibold py-3 px-8 rounded-full shadow-md transition-all"
-            >
-              Lihat Layanan
-            </a>
-            <a
-              href="#kontak"
-              className="border border-yellow-400 hover:bg-yellow-400/20 text-yellow-400 font-semibold py-3 px-8 rounded-full transition-all"
-            >
-              Hubungi Kami
-            </a>
-          </div>
-        </div>
-      </section>
+  <p className="text-gray-300 max-w-2xl font-light italic tracking-wide leading-relaxed text-[16px] sm:text-lg font-[Playfair_Display]">
+  Kami menyediakan layanan servis profesional untuk smartphone, laptop, dan
+  komputer dengan garansi resmi serta pelayanan cepat.
+</p>
+
+</section>
+
+
 
       {/* ================= KENAPA KAMI ================= */}
       <section
@@ -195,7 +181,7 @@ export default function Home() {
 
       {/* ================= HASIL SERVIS ================= */}
       <section
-        id="hasil"
+        id="hasil-servis"
         className="py-20 bg-gray-100 text-center"
         data-aos="fade-up"
       >
@@ -237,8 +223,118 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= TESTIMONIAL ================= */}
-      <TestimonialSection />
+      {/* ================= TESTIMONI ================= */}
+      <section id="testimoni">
+        <TestimonialSection />
+      </section>
+
+      {/* ================= KONTAK ================= */}
+      <section
+        id="kontak"
+        className="py-20 bg-gradient-to-br from-gray-50 via-white to-gray-100 text-center"
+        data-aos="fade-up"
+      >
+        <div className="max-w-4xl mx-auto px-6">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">
+            Hubungi <span className="text-blue-600">Kami</span>
+          </h2>
+          <p className="text-gray-600 mb-12 text-base sm:text-lg">
+            Terhubung dengan kami melalui platform berikut.
+          </p>
+
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 justify-center">
+            {[
+              {
+                href: "https://www.facebook.com/edi.aput.2025/",
+                icon: "https://cdn-icons-png.flaticon.com/512/733/733547.png",
+                label: "Facebook",
+              },
+              {
+                href: "https://www.instagram.com/ediaput411/",
+                icon: "https://cdn-icons-png.flaticon.com/512/2111/2111463.png",
+                label: "Instagram",
+              },
+              {
+                href: "https://wa.me/6289671577111",
+                icon: "https://cdn-icons-png.flaticon.com/512/733/733585.png",
+                label: "WhatsApp",
+              },
+              {
+                href: "mailto:ediaput200@gmail.com",
+                icon: "https://cdn-icons-png.flaticon.com/512/732/732200.png",
+                label: "Email",
+              },
+            ].map((item, i) => (
+              <a
+                key={i}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col items-center justify-center bg-white/70 backdrop-blur-md border border-gray-200 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+              >
+                <div className="w-16 h-16 flex items-center justify-center mb-3 rounded-full border border-gray-300 bg-gradient-to-br from-white to-gray-100 group-hover:border-blue-400 transition">
+                  <img
+                    src={item.icon}
+                    alt={item.label}
+                    className="w-8 h-8 opacity-60 group-hover:opacity-100 group-hover:brightness-110 transition-all duration-300"
+                  />
+                </div>
+                <span className="text-sm font-semibold text-gray-700 group-hover:text-blue-600 transition">
+                  {item.label}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= MARKETPLACE ================= */}
+      <section
+        id="market-place"
+        className="py-20 bg-gradient-to-bl from-gray-50 via-white to-blue-50 text-center"
+        data-aos="fade-up"
+      >
+        <div className="max-w-4xl mx-auto px-6">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">
+            Temukan Kami di <span className="text-blue-600">Marketplace</span>
+          </h2>
+          <p className="text-gray-600 mb-10 text-base sm:text-lg">
+            Beli produk dan aksesoris kami secara online dengan mudah dan aman.
+          </p>
+
+          <div className="flex flex-wrap justify-center gap-10">
+            {[
+              {
+                href: "https://www.tokopedia.com/edsparepartstore",
+                img: "/images/tokopedia.png",
+                alt: "Tokopedia",
+              },
+              {
+                href: "https://www.shopee.co.id/edsparepartstore",
+                img: "/images/shopee.png",
+                alt: "Shopee",
+              },
+            ].map((market, i) => (
+              <a
+                key={i}
+                href={market.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group w-32 h-32 flex flex-col items-center justify-center bg-white rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all border border-gray-100 hover:border-blue-300"
+              >
+                <img
+                  src={market.img}
+                  alt={market.alt}
+                  className="w-16 h-16 object-contain mb-2 group-hover:scale-110 transition-transform"
+                />
+                <span className="text-sm font-medium text-gray-700 group-hover:text-blue-600 transition">
+                  {market.alt}
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* ================= WHATSAPP FLOAT BUTTON ================= */}
       <a
