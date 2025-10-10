@@ -1,25 +1,27 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useState, useCallback } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import Lightbox from "yet-another-react-lightbox";
-import "yet-another-react-lightbox/styles.css";
-import TestimonialSection from "./TestimonialSection";
 import { motion } from "framer-motion";
-import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
+
+// ✅ Lazy load komponen berat agar tidak render di awal
+const Lightbox = dynamic(() => import("yet-another-react-lightbox"), { ssr: false });
+import "yet-another-react-lightbox/styles.css";
+const TestimonialSection = dynamic(() => import("./TestimonialSection"), { ssr: false });
+const Particles = dynamic(() => import("react-tsparticles"), { ssr: false });
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
 
-  // === INIT AOS ===
+  // === INIT AOS (lebih efisien) ===
   useEffect(() => {
     if (typeof window === "undefined") return;
-
     AOS.init({
-      duration: 500,
+      duration: 600,
       once: true,
       easing: "ease-out",
       offset: 100,
@@ -27,7 +29,7 @@ export default function Home() {
     });
   }, []);
 
-  // === LIGHTBOX DATA (untuk hasil servis) ===
+  // === LIGHTBOX DATA ===
   const slides = [
     { src: "/images/Pake 1.jpeg" },
     { src: "/images/Pake 2.jpeg" },
@@ -38,7 +40,7 @@ export default function Home() {
     { src: "/images/Pake 7.jpg" },
   ];
 
-  // === TSPARTICLES CONFIG ===
+  // === TSPARTICLES CONFIG (lebih ringan tapi tetap elegan) ===
   const particlesInit = useCallback(async (engine) => {
     await loadFull(engine);
   }, []);
@@ -46,30 +48,27 @@ export default function Home() {
   const particlesOptions = {
     fullScreen: { enable: false },
     background: { color: { value: "transparent" } },
-    fpsLimit: 60,
+    fpsLimit: 45, // turunkan fps sedikit untuk hemat baterai
     interactivity: {
       events: { onHover: { enable: true, mode: "repulse" } },
-      modes: { repulse: { distance: 100, duration: 0.4 } },
+      modes: { repulse: { distance: 80, duration: 0.3 } },
     },
     particles: {
       color: { value: ["#FFD700", "#FFFFFF"] },
       links: {
         color: "#FFD700",
-        distance: 150,
+        distance: 140,
         enable: true,
-        opacity: 0.3,
+        opacity: 0.25,
         width: 1,
       },
       move: {
-        direction: "none",
         enable: true,
+        speed: 1,
         outModes: { default: "bounce" },
-        random: false,
-        speed: 1.2,
-        straight: false,
       },
-      number: { value: 70, density: { enable: true, area: 800 } },
-      opacity: { value: 0.5 },
+      number: { value: 25, density: { enable: true, area: 800 } }, // kurangi partikel, tetap glow
+      opacity: { value: 0.4 },
       shape: { type: "circle" },
       size: { value: { min: 1, max: 3 } },
     },
@@ -79,8 +78,9 @@ export default function Home() {
   return (
     <main className="text-gray-800 overflow-x-hidden relative">
       {/* ================= HERO SECTION ================= */}
-      <div className="relative min-h-screen bg-[radial-gradient(circle_at_center,_#001f3f_0%,_#00122b_50%,_#000000_90%,_#c0c0c0_120%)] overflow-hidden">
-      <Particles
+      <div className="relative min-h-screen bg-[radial-gradient(circle_at_center,_#1a1a1a_0%,_#000000_60%,_#3b2f2f_120%)] overflow-hidden">
+        {/* ✅ Particles lebih efisien */}
+        <Particles
           id="tsparticles"
           init={particlesInit}
           options={particlesOptions}
@@ -98,12 +98,15 @@ export default function Home() {
             <div className="w-[400px] h-[400px] rounded-full bg-gradient-to-t from-yellow-500/10 to-transparent blur-3xl"></div>
           </div>
 
+          {/* ✅ Gunakan tag <img> biasa tapi optimasi CSS-nya */}
           <motion.img
             src="/images/logo.png"
             alt="EdServisStore Logo"
             animate={{ rotate: [0, 2, -2, 0] }}
             transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
-            className="w-28 h-28 mb-6 object-contain rounded-full border border-yellow-500/60 
+            loading="lazy"
+            decoding="async"
+            className="w-24 h-24 sm:w-28 sm:h-28 mb-6 object-contain rounded-full border border-yellow-500/60 
                        shadow-[0_0_25px_rgba(255,215,0,0.25)]"
           />
 
@@ -115,9 +118,7 @@ export default function Home() {
 
           <h2 className="text-2xl sm:text-3xl font-semibold text-gray-100 mb-6">
             Servis HP & Laptop{" "}
-            <span className="text-yellow-400 font-bold">
-              Cepat, Aman, dan Bergaransi
-            </span>
+            <span className="text-yellow-400 font-bold">Cepat, Aman, dan Bergaransi</span>
           </h2>
 
           <p className="text-gray-400 max-w-2xl font-light italic tracking-wide leading-relaxed text-[16px] sm:text-lg">
@@ -165,13 +166,11 @@ export default function Home() {
             ].map((item, i) => (
               <div
                 key={i}
-                className="bg-white shadow-lg p-6 rounded-2xl"
+                className="bg-white shadow-lg p-6 rounded-2xl hover:shadow-xl transition-all"
                 data-aos="zoom-in"
-                data-aos-delay={i * 100}
+                data-aos-delay={i * 120}
               >
-                <h3 className="text-xl font-semibold text-yellow-500 mb-3">
-                  {item.title}
-                </h3>
+                <h3 className="text-xl font-semibold text-yellow-500 mb-3">{item.title}</h3>
                 <p className="text-gray-600">{item.desc}</p>
               </div>
             ))}
@@ -198,7 +197,7 @@ export default function Home() {
             ].map((item, i) => (
               <div
                 key={i}
-                className="p-6 bg-gray-50 rounded-2xl shadow-lg"
+                className="p-6 bg-gray-50 rounded-2xl shadow-lg hover:shadow-xl transition-all"
                 data-aos="zoom-in"
                 data-aos-delay={i * 100}
               >
@@ -210,7 +209,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= HASIL SERVIS (FIXED) ================= */}
+      {/* ================= HASIL SERVIS ================= */}
       <section id="hasil-servis" className="py-20 bg-gray-50 relative z-10">
         <div className="max-w-6xl mx-auto px-6 text-center" data-aos="fade-up">
           <h2 className="text-3xl font-bold text-gray-800 mb-6">
@@ -233,6 +232,8 @@ export default function Home() {
                 <img
                   src={item.src}
                   alt={`Hasil Servis ${index + 1}`}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -241,16 +242,12 @@ export default function Home() {
           </div>
 
           {isOpen && (
-            <Lightbox
-              open={isOpen}
-              close={() => setIsOpen(false)} // ✅ tombol X fix
-              slides={slides}
-              index={photoIndex}
-            />
+            <Lightbox open={isOpen} close={() => setIsOpen(false)} slides={slides} index={photoIndex} />
           )}
         </div>
       </section>
 
+      {/* ================= TESTIMONIAL ================= */}
       <TestimonialSection />
 
       {/* ================= KONTAK ================= */}
@@ -301,6 +298,7 @@ export default function Home() {
                   <img
                     src={item.icon}
                     alt={item.label}
+                    loading="lazy"
                     className="w-8 h-8 opacity-60 group-hover:opacity-100 group-hover:brightness-110 transition-all duration-300"
                   />
                 </div>
@@ -350,6 +348,8 @@ export default function Home() {
                 <img
                   src={market.img}
                   alt={market.alt}
+                  loading="lazy"
+                  decoding="async"
                   className="w-16 h-16 object-contain mb-2 group-hover:scale-110 transition-transform"
                 />
                 <span className="text-sm font-medium text-gray-700 group-hover:text-yellow-500 transition">
@@ -372,6 +372,7 @@ export default function Home() {
           src="https://cdn-icons-png.flaticon.com/512/733/733585.png"
           alt="WhatsApp"
           className="w-6 h-6"
+          loading="lazy"
         />
         <span className="hidden sm:inline text-xs font-medium">Chat Sekarang</span>
       </a>
