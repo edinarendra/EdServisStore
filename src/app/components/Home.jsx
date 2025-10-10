@@ -1,16 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import Lightbox from "yet-another-react-lightbox";
 import "yet-another-react-lightbox/styles.css";
 import TestimonialSection from "./TestimonialSection";
+import { motion } from "framer-motion";
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
 
+  // === INIT AOS ===
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -19,110 +23,155 @@ export default function Home() {
       once: true,
       easing: "ease-out",
       offset: 100,
+      mirror: false,
     });
-
-    // Bersihkan sisa scroll bar
-    document.documentElement.style.overflowY = "auto";
-    document.body.style.overflow = "";
-
-    return () => {
-      document.body.style.overflow = "";
-    };
   }, []);
 
-  const images = [
-    "/images/Pake 1.jpeg",
-    "/images/Pake 2.jpeg",
-    "/images/Pake 3.jpg",
-    "/images/pake 4.jpg",
-    "/images/pake 5.jpg",
-    "/images/pake 6.jpeg",
-    "/images/Pake 7.jpg",
+  // === LIGHTBOX DATA (untuk hasil servis) ===
+  const slides = [
+    { src: "/images/pake 1.jpeg" },
+    { src: "/images/pake 2.jpeg" },
+    { src: "/images/pake 3.jpg" },
+    { src: "/images/pake 4.jpg" },
+    { src: "/images/pake 5.jpg" },
+    { src: "/images/pake 6.jpeg" },
+    { src: "/images/pake 7.jpg" },
   ];
 
-  const openLightbox = (index) => {
-    setPhotoIndex(index);
-    setIsOpen(true);
-    document.body.classList.add("lightbox-open");
-  };
+  // === TSPARTICLES CONFIG ===
+  const particlesInit = useCallback(async (engine) => {
+    await loadFull(engine);
+  }, []);
 
-  const closeLightbox = () => {
-    setIsOpen(false);
-    document.body.classList.remove("lightbox-open");
+  const particlesOptions = {
+    fullScreen: { enable: false },
+    background: { color: { value: "transparent" } },
+    fpsLimit: 60,
+    interactivity: {
+      events: { onHover: { enable: true, mode: "repulse" } },
+      modes: { repulse: { distance: 100, duration: 0.4 } },
+    },
+    particles: {
+      color: { value: ["#FFD700", "#FFFFFF"] },
+      links: {
+        color: "#FFD700",
+        distance: 150,
+        enable: true,
+        opacity: 0.3,
+        width: 1,
+      },
+      move: {
+        direction: "none",
+        enable: true,
+        outModes: { default: "bounce" },
+        random: false,
+        speed: 1.2,
+        straight: false,
+      },
+      number: { value: 70, density: { enable: true, area: 800 } },
+      opacity: { value: 0.5 },
+      shape: { type: "circle" },
+      size: { value: { min: 1, max: 3 } },
+    },
+    detectRetina: true,
   };
 
   return (
     <main className="text-gray-800 overflow-x-hidden relative">
+      {/* ================= HERO SECTION ================= */}
+      <div className="relative min-h-screen bg-[radial-gradient(circle_at_center,_#444444_0%,_#1a1a1a_50%,_#000000_100%)] overflow-hidden">
+        <Particles
+          id="tsparticles"
+          init={particlesInit}
+          options={particlesOptions}
+          className="absolute inset-0 w-full h-full -z-0 pointer-events-none"
+        />
 
-<section
-  id="home"
-  className="min-h-screen flex flex-col items-center justify-center text-center bg-[radial-gradient(circle_at_center,_#444444_0%,_#1a1a1a_50%,_#000000_100%)]
- px-6"
->
-  <img
-    src="/images/logo.png"
-    alt="EdServisStore Logo"
-    className="w-28 h-28 mb-4 object-contain rounded-full shadow-lg border-2 border-yellow-400"
-  />
+        <motion.section
+          id="home"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+          className="relative z-10 min-h-screen flex flex-col items-center justify-center text-center px-6"
+        >
+          <div className="absolute inset-0 flex items-center justify-center -z-10">
+            <div className="w-[400px] h-[400px] rounded-full bg-gradient-to-t from-yellow-500/10 to-transparent blur-3xl"></div>
+          </div>
 
-  <h1 className="text-5xl sm:text-6xl font-extrabold mb-4 text-yellow-400">
-    EdServisStore
-  </h1>
+          <motion.img
+            src="/images/logo.png"
+            alt="EdServisStore Logo"
+            animate={{ rotate: [0, 2, -2, 0] }}
+            transition={{ repeat: Infinity, duration: 8, ease: "easeInOut" }}
+            className="w-28 h-28 mb-6 object-contain rounded-full border border-yellow-500/60 
+                       shadow-[0_0_25px_rgba(255,215,0,0.25)]"
+          />
 
-  <h2 className="text-2xl sm:text-3xl font-semibold text-white mb-6">
-    Servis HP & Laptop{" "}
-    <span className="text-yellow-400">Cepat, Aman, dan Bergaransi</span>
-  </h2>
+          <h1 className="text-5xl sm:text-6xl font-extrabold mb-3 
+                         bg-gradient-to-r from-yellow-400 to-yellow-100 text-transparent bg-clip-text 
+                         tracking-tight drop-shadow-[0_0_10px_rgba(255,215,0,0.25)]">
+            EdServisStore
+          </h1>
 
-  <p className="text-gray-300 max-w-2xl font-light italic tracking-wide leading-relaxed text-[16px] sm:text-lg font-[Playfair_Display]">
-  Kami menyediakan layanan servis profesional untuk smartphone, laptop, dan
-  komputer dengan garansi resmi serta pelayanan cepat.
-</p>
-
-</section>
-
-
-
-      {/* ================= KENAPA KAMI ================= */}
-      <section
-        id="kenapa-kami"
-        className="scroll-mt-24 py-24 bg-gray-50 text-center"
-        data-aos="fade-up"
-      >
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-12">
-            Kenapa Memilih <span className="text-blue-600">EdServisStore?</span>
+          <h2 className="text-2xl sm:text-3xl font-semibold text-gray-100 mb-6">
+            Servis HP & Laptop{" "}
+            <span className="text-yellow-400 font-bold">
+              Cepat, Aman, dan Bergaransi
+            </span>
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <p className="text-gray-400 max-w-2xl font-light italic tracking-wide leading-relaxed text-[16px] sm:text-lg">
+            Kami menyediakan layanan servis profesional untuk smartphone, laptop, dan komputer
+            dengan garansi resmi serta pelayanan cepat dan transparan.
+          </p>
+
+          <div className="w-24 h-[2px] bg-gradient-to-r from-transparent via-yellow-400 to-transparent mt-8 opacity-70"></div>
+
+          <a
+            href="#kontak"
+            className="mt-10 inline-block bg-yellow-400 text-black font-semibold px-8 py-3 
+                       rounded-full hover:bg-yellow-300 transition-all shadow-[0_0_10px_rgba(255,215,0,0.3)]"
+          >
+            Chat Sekarang
+          </a>
+        </motion.section>
+      </div>
+
+      {/* ================= KENAPA KAMI ================= */}
+      <section id="kenapa-kami" className="py-20 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-6 text-center" data-aos="fade-up">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">
+            Kenapa Memilih <span className="text-yellow-500">EdServisStore</span>?
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto mb-12">
+            Kami tidak hanya memperbaiki perangkat Anda, tapi juga memberikan rasa aman,
+            transparansi, dan kualitas terbaik dengan garansi resmi.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                icon: "⚡",
-                title: "Cepat & Efisien",
-                desc: "Proses servis cepat tanpa mengorbankan kualitas.",
+                title: "Cepat & Profesional",
+                desc: "Teknisi berpengalaman siap menyelesaikan servis dengan waktu efisien tanpa mengorbankan kualitas.",
               },
               {
-                icon: "🧰",
-                title: "Teknisi Berpengalaman",
-                desc: "Dikerjakan oleh profesional berpengalaman.",
+                title: "Garansi Resmi",
+                desc: "Setiap servis kami sertakan garansi resmi agar pelanggan merasa lebih tenang.",
               },
               {
-                icon: "🛡️",
-                title: "Bergaransi",
-                desc: "Semua layanan bergaransi sesuai jenis perbaikan.",
-              },
-              {
-                icon: "💬",
-                title: "Konsultasi Gratis",
-                desc: "Kamu bisa konsultasi dulu tanpa biaya.",
+                title: "Transparan & Aman",
+                desc: "Semua proses dijelaskan secara terbuka — tanpa biaya tersembunyi dan hasil yang jujur.",
               },
             ].map((item, i) => (
               <div
                 key={i}
-                className="bg-white rounded-2xl shadow-md p-8 hover:shadow-lg transition-all duration-300"
+                className="bg-white shadow-lg p-6 rounded-2xl"
+                data-aos="zoom-in"
+                data-aos-delay={i * 100}
               >
-                <div className="text-blue-600 text-5xl mb-4">{item.icon}</div>
-                <h3 className="text-xl font-semibold mb-2">{item.title}</h3>
+                <h3 className="text-xl font-semibold text-yellow-500 mb-3">
+                  {item.title}
+                </h3>
                 <p className="text-gray-600">{item.desc}</p>
               </div>
             ))}
@@ -130,81 +179,63 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= LAYANAN KAMI ================= */}
-      <section
-        id="layanan"
-        className="py-20 bg-white text-center"
-        data-aos="fade-up"
-      >
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-12">
-            Layanan <span className="text-blue-600">Kami</span>
+      {/* ================= LAYANAN ================= */}
+      <section id="layanan" className="py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-6 text-center" data-aos="fade-up">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">
+            Layanan <span className="text-yellow-500">Kami</span>
           </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto mb-12">
+            Kami melayani berbagai kebutuhan servis dan perbaikan perangkat digital Anda dengan harga bersahabat.
+          </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-8">
             {[
-              {
-                icon: "📱",
-                title: "Servis HP",
-                desc: "Perbaikan semua jenis kerusakan smartphone.",
-              },
-              {
-                icon: "💻",
-                title: "Servis Laptop",
-                desc: "Perbaikan laptop semua merek dan tipe.",
-              },
-              {
-                icon: "🖥️",
-                title: "Rakit PC",
-                desc: "Rakit PC untuk gaming, editing, dan kerja.",
-              },
-              {
-                icon: "🛒",
-                title: "Aksesoris & Sparepart",
-                desc: "Jual aksesoris & sparepart gadget berkualitas.",
-              },
-            ].map((layanan, i) => (
+              { title: "Servis HP", desc: "Perbaikan segala merek smartphone dengan jaminan keaslian suku cadang." },
+              { title: "Servis Laptop", desc: "Mulai dari ganti LCD, keyboard, hingga instalasi software." },
+              { title: "Rakit PC", desc: "Kami bantu merakit PC sesuai kebutuhan gaming, editing, atau kantor." },
+              { title: "Aksesoris", desc: "Berbagai aksesoris berkualitas untuk menunjang perangkat Anda." },
+            ].map((item, i) => (
               <div
                 key={i}
-                className="bg-gray-50 rounded-2xl p-8 shadow-md hover:shadow-xl hover:scale-105 transition-all duration-300"
+                className="p-6 bg-gray-50 rounded-2xl shadow-lg"
+                data-aos="zoom-in"
+                data-aos-delay={i * 100}
               >
-                <div className="text-blue-600 text-5xl mb-4">
-                  {layanan.icon}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{layanan.title}</h3>
-                <p className="text-gray-600">{layanan.desc}</p>
+                <h3 className="text-lg font-semibold text-yellow-500 mb-2">{item.title}</h3>
+                <p className="text-gray-600 text-sm">{item.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ================= HASIL SERVIS ================= */}
-      <section
-        id="hasil-servis"
-        className="py-20 bg-gray-100 text-center"
-        data-aos="fade-up"
-      >
-        <div className="max-w-6xl mx-auto px-6">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-12 text-gray-800">
+      {/* ================= HASIL SERVIS (FIXED) ================= */}
+      <section id="hasil-servis" className="py-20 bg-gray-50 relative z-10">
+        <div className="max-w-6xl mx-auto px-6 text-center" data-aos="fade-up">
+          <h2 className="text-3xl font-bold text-gray-800 mb-6">
             Hasil <span className="text-yellow-500">Servis Kami</span>
           </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto mb-12">
+            Beberapa dokumentasi hasil servis pelanggan kami yang puas dengan layanan EdServisStore.
+          </p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {images.map((src, index) => (
+          <div className="grid md:grid-cols-3 sm:grid-cols-2 gap-6">
+            {slides.map((item, index) => (
               <div
                 key={index}
-                className="relative overflow-hidden rounded-2xl shadow-lg cursor-pointer group"
-                onClick={() => openLightbox(index)}
+                className="relative group cursor-pointer overflow-hidden rounded-2xl shadow-lg hover:shadow-2xl transition-transform duration-300"
+                onClick={() => {
+                  setPhotoIndex(index);
+                  setIsOpen(true);
+                }}
               >
                 <img
-                  src={src}
+                  src={item.src}
                   alt={`Hasil Servis ${index + 1}`}
-                  className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-500 flex justify-center items-center text-white font-medium">
-                  Lihat Detail
-                </div>
+                <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
               </div>
             ))}
           </div>
@@ -212,21 +243,15 @@ export default function Home() {
           {isOpen && (
             <Lightbox
               open={isOpen}
-              close={closeLightbox}
-              slides={images.map((src) => ({ src }))}
+              close={() => setIsOpen(false)} // ✅ tombol X fix
+              slides={slides}
               index={photoIndex}
-              on={{ view: ({ index }) => setPhotoIndex(index) }}
-              controller={{ closeOnBackdropClick: true }}
-              carousel={{ finite: true }}
             />
           )}
         </div>
       </section>
 
-      {/* ================= TESTIMONI ================= */}
-      <section id="testimoni">
-        <TestimonialSection />
-      </section>
+      <TestimonialSection />
 
       {/* ================= KONTAK ================= */}
       <section
@@ -236,7 +261,7 @@ export default function Home() {
       >
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">
-            Hubungi <span className="text-blue-600">Kami</span>
+            Hubungi <span className="text-yellow-500">Kami</span>
           </h2>
           <p className="text-gray-600 mb-12 text-base sm:text-lg">
             Terhubung dengan kami melalui platform berikut.
@@ -272,14 +297,14 @@ export default function Home() {
                 rel="noopener noreferrer"
                 className="group flex flex-col items-center justify-center bg-white/70 backdrop-blur-md border border-gray-200 rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
               >
-                <div className="w-16 h-16 flex items-center justify-center mb-3 rounded-full border border-gray-300 bg-gradient-to-br from-white to-gray-100 group-hover:border-blue-400 transition">
+                <div className="w-16 h-16 flex items-center justify-center mb-3 rounded-full border border-gray-300 bg-gradient-to-br from-white to-gray-100 group-hover:border-yellow-400 transition">
                   <img
                     src={item.icon}
                     alt={item.label}
                     className="w-8 h-8 opacity-60 group-hover:opacity-100 group-hover:brightness-110 transition-all duration-300"
                   />
                 </div>
-                <span className="text-sm font-semibold text-gray-700 group-hover:text-blue-600 transition">
+                <span className="text-sm font-semibold text-gray-700 group-hover:text-yellow-500 transition">
                   {item.label}
                 </span>
               </a>
@@ -291,12 +316,12 @@ export default function Home() {
       {/* ================= MARKETPLACE ================= */}
       <section
         id="market-place"
-        className="py-20 bg-gradient-to-bl from-gray-50 via-white to-blue-50 text-center"
+        className="py-20 bg-gradient-to-bl from-gray-50 via-white to-yellow-50 text-center"
         data-aos="fade-up"
       >
         <div className="max-w-4xl mx-auto px-6">
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-800 mb-6">
-            Temukan Kami di <span className="text-blue-600">Marketplace</span>
+            Temukan Kami di <span className="text-yellow-500">Marketplace</span>
           </h2>
           <p className="text-gray-600 mb-10 text-base sm:text-lg">
             Beli produk dan aksesoris kami secara online dengan mudah dan aman.
@@ -320,14 +345,14 @@ export default function Home() {
                 href={market.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group w-32 h-32 flex flex-col items-center justify-center bg-white rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all border border-gray-100 hover:border-blue-300"
+                className="group w-32 h-32 flex flex-col items-center justify-center bg-white rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all border border-gray-100 hover:border-yellow-400"
               >
                 <img
                   src={market.img}
                   alt={market.alt}
                   className="w-16 h-16 object-contain mb-2 group-hover:scale-110 transition-transform"
                 />
-                <span className="text-sm font-medium text-gray-700 group-hover:text-blue-600 transition">
+                <span className="text-sm font-medium text-gray-700 group-hover:text-yellow-500 transition">
                   {market.alt}
                 </span>
               </a>
@@ -348,9 +373,7 @@ export default function Home() {
           alt="WhatsApp"
           className="w-6 h-6"
         />
-        <span className="hidden sm:inline text-xs font-medium">
-          Chat Sekarang
-        </span>
+        <span className="hidden sm:inline text-xs font-medium">Chat Sekarang</span>
       </a>
     </main>
   );
