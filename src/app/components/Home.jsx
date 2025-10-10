@@ -29,13 +29,13 @@ export default function Home() {
 
   // === LIGHTBOX DATA (untuk hasil servis) ===
   const slides = [
-    { src: "/images/pake 1.jpeg" },
-    { src: "/images/pake 2.jpeg" },
-    { src: "/images/pake 3.jpg" },
+    { src: "/images/Pake 1.jpeg" },
+    { src: "/images/Pake 2.jpeg" },
+    { src: "/images/Pake 3.jpg" },
     { src: "/images/pake 4.jpg" },
     { src: "/images/pake 5.jpg" },
     { src: "/images/pake 6.jpeg" },
-    { src: "/images/pake 7.jpg" },
+    { src: "/images/Pake 7.jpg" },
   ];
 
   // === TSPARTICLES CONFIG ===
@@ -79,8 +79,8 @@ export default function Home() {
   return (
     <main className="text-gray-800 overflow-x-hidden relative">
       {/* ================= HERO SECTION ================= */}
-      <div className="relative min-h-screen bg-[radial-gradient(circle_at_center,_#444444_0%,_#1a1a1a_50%,_#000000_100%)] overflow-hidden">
-        <Particles
+      <div className="relative min-h-screen bg-[radial-gradient(circle_at_center,_#001f3f_0%,_#00122b_50%,_#000000_90%,_#c0c0c0_120%)] overflow-hidden">
+      <Particles
           id="tsparticles"
           init={particlesInit}
           options={particlesOptions}
